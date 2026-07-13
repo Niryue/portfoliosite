@@ -1,39 +1,10 @@
 "use client";
-
-// import { useEffect, useRef } from "react";
-
-
-// export default function Home() {
-//   const videoRef = useRef<HTMLVideoElement>(null);
-
-//   useEffect(() => {
-//     if (videoRef.current) {
-//       videoRef.current.playbackRate = 0.5; // Half speed
-//     }
-//   }, []);
-//   return (
-//     <main style={{ width: "100vw", height: "100vh" }}>
-//       <video
-//         ref={videoRef}
-//         autoPlay
-//         loop
-//         muted
-//         playsInline
-//         className="fixed inset-0 w-full h-full object-cover -z-10"
-//       >
-//         <source src="/videos/mainpg.mp4" type="video/mp4" />
-//       </video>
-      
-
-//     </main>
-//   );
-// }
-
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useVideoTexture, useTexture, useGLTF, Sparkles, FlyControls } from "@react-three/drei";
 import * as THREE from "three";
 import { useEffect, useRef, useState, useMemo } from "react";
 import { EffectComposer, SelectiveBloom, Selection, Select } from "@react-three/postprocessing";
+import { useRouter } from "next/navigation";
 
 
 function VideoPlane() {
@@ -85,9 +56,50 @@ function TexturePlane({ texturePath, position, scale, opacity, phase, hovered })
   );
 }
 
-function HoverArea({ hovered, setHovered }) {
+function WhiteAnimPlane({ whiteAnim, setWhiteAnim }) {
+  const texture = useTexture("/images/white.png");
+  const materialRef = useRef();
+
+  useFrame((state, delta) => {
+    if (whiteAnim) {
+      materialRef.current.opacity = Math.min(
+        materialRef.current.opacity + delta / 1,
+        1
+      );
+    }
+  });
+  return (
+  <mesh
+    scale={5}
+    position={[0, 0, 1]}
+    >
+      <planeGeometry args={[1, 1]} />
+      <meshBasicMaterial
+        ref={materialRef}
+        map={texture}
+        transparent
+        fog={false}
+         toneMapped={false}
+        color={new THREE.Color(10, 10, 10)}
+        opacity={0}
+      />
+
+    </mesh>
+  );
+}
+
+
+function HoverArea({ hovered, setHovered, whiteAnim, setWhiteAnim }) {
   const { scene: portfolioHover } = useGLTF("/models/portfolioHover.glb");
   const { scene: nameHover } = useGLTF("/models/nameHover.glb");
+  const router = useRouter();
+
+  function clickEventHandler(path) {
+
+    setTimeout(() => {
+      router.push(path);
+    }, 1000); // Wait 2 seconds
+  }
 
   useEffect(() => {
       [portfolioHover, nameHover].forEach((scene) => {
@@ -104,6 +116,10 @@ function HoverArea({ hovered, setHovered }) {
     <group>
       <primitive
         object={portfolioHover}
+        onClick={() => {
+          setWhiteAnim(true);
+          clickEventHandler("/portfolio");
+        }}
         onPointerOver={() => setHovered("Portfolio")}
         onPointerOut={() => setHovered(null)}
         position={[0.22, -0.11, 0.05]}
@@ -115,6 +131,10 @@ function HoverArea({ hovered, setHovered }) {
 
       <primitive
         object={nameHover}
+        onClick={() => {
+          setWhiteAnim(true);
+          clickEventHandler("/about");
+        }}
         onPointerOver={() => setHovered("Name")}
         onPointerOut={() => setHovered(null)}
         position={[-0.59, -0.52, 0.05]}
@@ -239,6 +259,7 @@ export default function Home() {
     [8, -5, -25],
   ];
   const [hovered, setHovered] = useState(null);
+  const [whiteAnim, setWhiteAnim] = useState(false);
 
   return (
     <main style={{ width: "100vw", height: "100vh" }}>
@@ -269,7 +290,9 @@ export default function Home() {
           <TexturePlane texturePath="/images/whiteblur.png" position={[0.47, 0.5, 0.1]} scale={0.7} opacity={0.55} phase={0} hovered={hovered === "Portfolio"}/>
           <TexturePlane texturePath="/images/Name.png" position={[-0.7, 0.32, 0.1]} scale={0.7} opacity={1} phase={Math.PI} hovered={true}/>
           <TexturePlane texturePath="/images/whiteblur.png" position={[-0.7, 0.32, 0.1]} scale={0.7} opacity={0.55} phase={Math.PI} hovered={hovered === "Name"}/>
-          <HoverArea hovered={hovered} setHovered={setHovered} />
+          <HoverArea hovered={hovered} setHovered={setHovered} whiteAnim={whiteAnim} setWhiteAnim={setWhiteAnim} />
+
+          <WhiteAnimPlane whiteAnim={whiteAnim} setWhiteAnim={setWhiteAnim} />
       </Canvas>
     </main>
   );
