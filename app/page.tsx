@@ -5,56 +5,12 @@ import * as THREE from "three";
 import { useEffect, useRef, useState, useMemo } from "react";
 import { EffectComposer, SelectiveBloom, Selection, Select } from "@react-three/postprocessing";
 import { useRouter } from "next/navigation";
-
-
-function VideoPlane() {
-  const texture = useVideoTexture("/videos/mainpg.mp4");
-  
-  useEffect(() => {
-    const video = texture.image;
-
-    if (video instanceof HTMLVideoElement) {
-      video.playbackRate = 0.5; // Half speed
-    }
-  }, [texture]);
-  return (
-    <mesh
-      position={[0, 0, 0]}>
-      <planeGeometry args={[4, 2.25]} />
-      <meshBasicMaterial map={texture} toneMapped={false} fog={false}/>
-    </mesh>
-  );
-}
-
-function TexturePlane({ texturePath, position, scale, opacity, phase, hovered }) {
-  const texture = useTexture(texturePath);
-  const ref = useRef();
-  useFrame(({ clock }) => {
-    const t = clock.getElapsedTime() % (Math.PI * 2);
-
-  ref.current.position.y =
-      position[1] + Math.sin(t * 2 + phase) * 0.03;
-  });
-
-  return (//make later a glow effect only appear when mouse hovers
-    <mesh
-      ref={ref}
-      position={position}
-      scale={scale}
-    >
-      <planeGeometry args={[1, 1]} />
-
-      <meshBasicMaterial
-        map={texture}
-        transparent
-        fog={false}
-        color="white"
-        opacity={hovered ? opacity : 0}
-      />
-
-    </mesh>
-  );
-}
+import TexturePlane from "@/components/TexturePlane";
+import VideoPlane from "@/components/VideoPlane";
+import CameraRig from "@/components/CameraRig";
+import Freecam from "@/components/Freecam";
+import Floor from "@/components/Floor";
+import MovingPillar from "@/components/MovingPillar";
 
 function WhiteAnimPlane({ whiteAnim, setWhiteAnim }) {
   const texture = useTexture("/images/white.png");
@@ -147,52 +103,6 @@ function HoverArea({ hovered, setHovered, whiteAnim, setWhiteAnim }) {
   );
 }
 
-function Floor() {
-  return (
-    <mesh
-      position={[0, -5, 0]}
-      rotation={[-Math.PI / 2, 0, 0]}
-      receiveShadow
-    >
-      <planeGeometry args={[50, 50]} />
-      <meshStandardMaterial 
-      color="#ffffff"
-      roughness={0.5}/>
-    </mesh>
-  );
-}
-
-function Pillar({ position }) {
-  const { scene } = useGLTF("/models/pillar.glb");
-  const clonedScene = useMemo(() => scene.clone(), [scene]);
-  useEffect(() => {
-    clonedScene.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        child.castShadow = true;
-        }
-      });
-    }, [clonedScene]);
-  
-  const ref = useRef();
-
-  useFrame(() => {
-    ref.current.position.z += 0.006;
-
-    // Reset pillar when it goes past the camera
-      if (ref.current.position.z > 5) {
-        ref.current.position.z = -25;
-      }
-    });
-   return (
-    <primitive
-      ref={ref}
-      object={clonedScene}
-      scale={[0.8, 1, 0.8]}
-      position={position}
-      rotation={[0, 0, 0]}
-    />
-  );
-}
 
 function SceneFog() {
   const { scene } = useThree();
@@ -217,37 +127,7 @@ function SceneFog() {
 //   );
 // }
 
-// restricted camera movement based on mouse position
-function CameraRig() {
-  const { camera, pointer } = useThree();
 
-  useFrame(() => {
-    const intensity = 0.15;
-
-    const targetX = pointer.x * intensity;
-    const targetY = pointer.y * intensity;
-
-    camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetX, 0.03);
-    camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetY, 0.03);
-    camera.position.z = 3;
-
-    camera.lookAt(0, 0, 0);
-  });
-
-  return null;
-}
-//free cam
-// function Freecam() {
-//   const { camera, gl } = useThree();
-
-//   return (
-//     <FlyControls
-//       args={[camera, gl.domElement]}
-//       movementSpeed={5}
-//       rollSpeed={0.5}
-//     />
-//   );
-// }
 
 export default function Home() {
   const pillars = [
@@ -268,8 +148,15 @@ export default function Home() {
       camera={{ position: [0, 0, 3], fov: 50 }}
       style={{ background: "#e0ecff" }}>
           <CameraRig />
+
           {/* <Freecam /> */}
-          <VideoPlane />
+
+          <VideoPlane 
+          texturePath="/videos/mainpg.mp4" 
+          position={[0, 0, 0]} 
+          args={[4, 2.25]} 
+          playbackRate={0.5} />
+
           <directionalLight 
           position={[100, 20, 30]} 
           intensity={20} 
@@ -280,16 +167,44 @@ export default function Home() {
           shadow-camera-right={20}
           shadow-camera-top={20}
           shadow-camera-bottom={-20} />
+
           <ambientLight intensity={2} />
+
           <Floor />
+
           {pillars.map((pos, i) => (
-            <Pillar key={i} position={pos} />
+            <MovingPillar key={i} position={pos} />
           ))}
           <SceneFog />
-          <TexturePlane texturePath="/images/Portfolio.png" position={[0.47, 0.5, 0.1]} scale={0.7} opacity={1} phase={0} hovered={true}/>
-          <TexturePlane texturePath="/images/whiteblur.png" position={[0.47, 0.5, 0.1]} scale={0.7} opacity={0.55} phase={0} hovered={hovered === "Portfolio"}/>
-          <TexturePlane texturePath="/images/Name.png" position={[-0.7, 0.32, 0.1]} scale={0.7} opacity={1} phase={Math.PI} hovered={true}/>
-          <TexturePlane texturePath="/images/whiteblur.png" position={[-0.7, 0.32, 0.1]} scale={0.7} opacity={0.55} phase={Math.PI} hovered={hovered === "Name"}/>
+          <TexturePlane 
+          texturePath="/images/Portfolio.png" 
+          position={[0.47, 0.5, 0.1]} 
+          scale={0.7} 
+          opacity={1} 
+          phase={0} 
+          hovered={true}/>
+          <TexturePlane 
+          texturePath="/images/whiteblur.png" 
+          position={[0.47, 0.5, 0.1]} 
+          scale={0.7} 
+          opacity={0.55} 
+          phase={0} 
+          hovered={hovered === "Portfolio"}/>
+          <TexturePlane 
+          texturePath="/images/Name.png" 
+          position={[-0.7, 0.32, 0.1]} 
+          scale={0.7} 
+          opacity={1} 
+          phase={Math.PI} 
+          hovered={true}/>
+          <TexturePlane 
+          texturePath="/images/whiteblur.png" 
+          position={[-0.7, 0.32, 0.1]} 
+          scale={0.7} 
+          opacity={0.55} 
+          phase={Math.PI} 
+          hovered={hovered === "Name"}/>
+
           <HoverArea hovered={hovered} setHovered={setHovered} whiteAnim={whiteAnim} setWhiteAnim={setWhiteAnim} />
 
           <WhiteAnimPlane whiteAnim={whiteAnim} setWhiteAnim={setWhiteAnim} />
