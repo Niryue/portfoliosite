@@ -1,133 +1,17 @@
 "use client";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useVideoTexture, useTexture, useGLTF, Sparkles, FlyControls } from "@react-three/drei";
-import * as THREE from "three";
-import { useEffect, useRef, useState, useMemo } from "react";
-import { EffectComposer, SelectiveBloom, Selection, Select } from "@react-three/postprocessing";
-import { useRouter } from "next/navigation";
+import { Canvas } from "@react-three/fiber";
+import { useState } from "react";
+
 import TexturePlane from "@/components/TexturePlane";
 import VideoPlane from "@/components/VideoPlane";
 import CameraRig from "@/components/CameraRig";
-import Freecam from "@/components/Freecam";
+// import Freecam from "@/components/Freecam";
 import Floor from "@/components/Floor";
 import MovingPillar from "@/components/MovingPillar";
-
-function WhiteAnimPlane({ whiteAnim, setWhiteAnim }) {
-  const texture = useTexture("/images/white.png");
-  const materialRef = useRef();
-
-  useFrame((state, delta) => {
-    if (whiteAnim) {
-      materialRef.current.opacity = Math.min(
-        materialRef.current.opacity + delta / 1,
-        1
-      );
-    }
-  });
-  return (
-  <mesh
-    scale={5}
-    position={[0, 0, 1]}
-    >
-      <planeGeometry args={[1, 1]} />
-      <meshBasicMaterial
-        ref={materialRef}
-        map={texture}
-        transparent
-        fog={false}
-         toneMapped={false}
-        color={new THREE.Color(10, 10, 10)}
-        opacity={0}
-      />
-
-    </mesh>
-  );
-}
-
-
-function HoverArea({ hovered, setHovered, whiteAnim, setWhiteAnim }) {
-  const { scene: portfolioHover } = useGLTF("/models/portfolioHover.glb");
-  const { scene: nameHover } = useGLTF("/models/nameHover.glb");
-  const router = useRouter();
-
-  function clickEventHandler(path) {
-
-    setTimeout(() => {
-      router.push(path);
-    }, 1000); // Wait 2 seconds
-  }
-
-  useEffect(() => {
-      [portfolioHover, nameHover].forEach((scene) => {
-        scene.traverse((child) => {
-          if (child.isMesh) {
-            child.material.transparent = true;
-            child.material.opacity = 0;
-          }
-        });
-      });
-    }, [portfolioHover, nameHover]);
-
-  return (
-    <group>
-      <primitive
-        object={portfolioHover}
-        onClick={() => {
-          setWhiteAnim(true);
-          clickEventHandler("/portfolio");
-        }}
-        onPointerOver={() => setHovered("Portfolio")}
-        onPointerOut={() => setHovered(null)}
-        position={[0.22, -0.11, 0.05]}
-        scale={0.56}
-        rotation={[0, Math.PI/2, 0.15]}
-        rotation-order="ZYX"
-      >
-      </primitive>
-
-      <primitive
-        object={nameHover}
-        onClick={() => {
-          setWhiteAnim(true);
-          clickEventHandler("/about");
-        }}
-        onPointerOver={() => setHovered("Name")}
-        onPointerOut={() => setHovered(null)}
-        position={[-0.59, -0.52, 0.05]}
-        scale={1.2}
-        rotation={[0, Math.PI/2, 0.05]}
-        rotation-order="ZYX"
-      >
-      </primitive>
-    </group>
-  );
-}
-
-
-function SceneFog() {
-  const { scene } = useThree();
-
-  useEffect(() => {
-    scene.fog = new THREE.FogExp2("#e0ecff", 0.06);
-  }, [scene]);
-
-  return null;
-}
-// function Dust() { Sparkles particle
-//   return (
-//     <Sparkles
-//       count={500}
-//       size={10}
-//       speed={0.2}
-//       opacity={0.15}
-//       color="yellow"
-//       scale={[1, 0.5, 0.02]}
-//       position={[0, 0, -0.1]}
-//     />
-//   );
-// }
-
-
+import SparklesParticle from "@/components/SparklesParticle";
+import WhiteAnimPlane from "@/components/WhiteAnimPlane";
+import HoverArea from "@/components/HoverArea";
+import SceneFog from "@/components/SceneFog";
 
 export default function Home() {
   const pillars = [
@@ -150,6 +34,9 @@ export default function Home() {
           <CameraRig />
 
           {/* <Freecam /> */}
+          <SparklesParticle scale={3}
+          count={35}
+          />
 
           <VideoPlane 
           texturePath="/videos/mainpg.mp4" 
@@ -205,7 +92,23 @@ export default function Home() {
           phase={Math.PI} 
           hovered={hovered === "Name"}/>
 
-          <HoverArea hovered={hovered} setHovered={setHovered} whiteAnim={whiteAnim} setWhiteAnim={setWhiteAnim} />
+          <HoverArea modelPath="/models/portfolioHover.glb"
+          modelName="Portfolio" 
+          clickPath="/portfolio"
+          position={[0.22, -0.11, 0.05]} 
+          scale={0.56} 
+          rotation={[0, Math.PI/2, 0.15]}
+          setHovered={setHovered} 
+          setWhiteAnim={setWhiteAnim} />
+
+          <HoverArea modelPath="/models/nameHover.glb"
+          modelName="Name" 
+          clickPath="/about"
+          position={[-0.59, -0.52, 0.05]} 
+          scale={1.2} 
+          rotation={[0, Math.PI/2, 0.05]}
+          setHovered={setHovered} 
+          setWhiteAnim={setWhiteAnim} />
 
           <WhiteAnimPlane whiteAnim={whiteAnim} setWhiteAnim={setWhiteAnim} />
       </Canvas>

@@ -4,8 +4,11 @@ import { useGLTF } from "@react-three/drei";
 import { useRef, useEffect, useMemo } from "react";
 import * as THREE from "three";
 
+type MovingPillarProps = {
+  position: [number, number, number];
+}; 
 
-export default function MovingPillar({ position }) {
+export default function MovingPillar({ position }: MovingPillarProps) {
   const { scene } = useGLTF("/models/pillar.glb");
   const clonedScene = useMemo(() => scene.clone(), [scene]);
   useEffect(() => {
