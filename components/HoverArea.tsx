@@ -1,9 +1,9 @@
 "use client";
 
 import { useGLTF } from "@react-three/drei";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-
+import { useTransition } from "@/components/WhiteTransition";
 
 type HoverAreaProps = {
     modelPath: string;
@@ -11,86 +11,33 @@ type HoverAreaProps = {
     position: [number, number, number];
     scale: number;
     rotation: [number, number, number];
-    hovered: string | null;
     setHovered: (value: string | null) => void;
-    whiteAnim: boolean;
-    setWhiteAnim: (value: boolean) => void;
 };
 
-// export default function HoverArea({ hovered, setHovered, whiteAnim, setWhiteAnim } : HoverAreaProps) {
-//   const { scene: portfolioHover } = useGLTF("/models/portfolioHover.glb");
-//   const { scene: nameHover } = useGLTF("/models/nameHover.glb");
-//   const router = useRouter();
-
-//   function clickEventHandler(path) {
-
-//     setTimeout(() => {
-//       router.push(path);
-//     }, 1000); // Wait 2 seconds
-//   }
-
-//   useEffect(() => {
-//       [portfolioHover, nameHover].forEach((scene) => {
-//         scene.traverse((child) => {
-//           if (child.isMesh) {
-//             child.material.transparent = true;
-//             child.material.opacity = 0;
-//           }
-//         });
-//       });
-//     }, [portfolioHover, nameHover]);
-
-//   return (
-//     <group>
-//       <primitive
-//         object={portfolioHover}
-//         onClick={() => {
-//           setWhiteAnim(true);
-//           clickEventHandler("/portfolio");
-//         }}
-//         onPointerOver={() => setHovered("Portfolio")}
-//         onPointerOut={() => setHovered(null)}
-//         position={[0.22, -0.11, 0.05]}
-//         scale={0.56}
-//         rotation={[0, Math.PI/2, 0.15]}
-//         rotation-order="ZYX"
-//       >
-//       </primitive>
-
-//       <primitive
-//         object={nameHover}
-//         onClick={() => {
-//           setWhiteAnim(true);
-//           clickEventHandler("/about");
-//         }}
-//         onPointerOver={() => setHovered("Name")}
-//         onPointerOut={() => setHovered(null)}
-//         position={[-0.59, -0.52, 0.05]}
-//         scale={1.2}
-//         rotation={[0, Math.PI/2, 0.05]}
-//         rotation-order="ZYX"
-//       >
-//       </primitive>
-//     </group>
-//   );
-// }
 export default function HoverArea({ modelPath, 
     modelName, 
     clickPath,
     position, 
     scale, 
     rotation, 
-    setHovered, 
-    setWhiteAnim } : HoverAreaProps) {
+    setHovered } : HoverAreaProps) {
   const { scene } = useGLTF(modelPath);
   const router = useRouter();
+  const { setWhiteAnim } = useTransition();
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   function clickEventHandler(clickPath) {
 
     setTimeout(() => {
       router.push(clickPath);
-    }, 1000); // Wait 2 seconds
+    }, 2500); // Wait 2.5 seconds
   }
+
+  useEffect(() => {
+      audioRef.current = new Audio("/sounds/hover.mp3");
+      audioRef.current.preload = "auto";
+      audioRef.current.volume = 0.5;
+    }, []);
 
   useEffect(() => {
       [scene].forEach((scene) => {
@@ -110,7 +57,13 @@ export default function HoverArea({ modelPath,
           setWhiteAnim(true);
           clickEventHandler(clickPath);
         }}
-        onPointerOver={() => setHovered(modelName)}
+        onPointerOver={() => {setHovered(modelName);
+                              const audio = audioRef.current;
+                              if (audio) {
+                              audio.currentTime = 0;
+                              audio.play();
+      };
+        }}
         onPointerOut={() => setHovered(null)}
         position={position}
         scale={scale}
@@ -120,20 +73,3 @@ export default function HoverArea({ modelPath,
       </primitive>
   );
 }
-// <HoverArea modelPath="/models/portfolioHover.glb"
-// modelName="Portfolio" 
-// clickPath="/portfolio"
-// position={[0.22, -0.11, 0.05]} 
-// scale={0.56} 
-// rotation={[0, Math.PI/2, 0.15]}
-// setHovered={setHovered} 
-// setWhiteAnim={setWhiteAnim} />
-
-// <HoverArea modelPath="/models/nameHover.glb"
-// modelName="Name" 
-// clickPath="/about"
-// position={[-0.59, -0.52, 0.05]} 
-// scale={1.2} 
-// rotation={[0, Math.PI/2, 0.05]}
-// setHovered={setHovered} 
-// setWhiteAnim={setWhiteAnim} />

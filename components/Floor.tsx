@@ -1,4 +1,8 @@
-export default function Floor() {
+type FloorProps = {
+  color?: string;
+};
+
+export default function Floor({ color }: FloorProps) {
   return (
     <mesh
       position={[0, -5, 0]}
@@ -7,7 +11,7 @@ export default function Floor() {
     >
       <planeGeometry args={[50, 50]} />
       <meshStandardMaterial 
-      color="#ffffff"
+      color={color || "#ffffff"}
       roughness={0.5}/>
     </mesh>
   );

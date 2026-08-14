@@ -12,6 +12,7 @@ import SparklesParticle from "@/components/SparklesParticle";
 import WhiteAnimPlane from "@/components/WhiteAnimPlane";
 import HoverArea from "@/components/HoverArea";
 import SceneFog from "@/components/SceneFog";
+import { useTransition } from "@/components/WhiteTransition";
 
 export default function Home() {
   const pillars = [
@@ -23,7 +24,6 @@ export default function Home() {
     [8, -5, -25],
   ];
   const [hovered, setHovered] = useState(null);
-  const [whiteAnim, setWhiteAnim] = useState(false);
 
   return (
     <main style={{ width: "100vw", height: "100vh" }}>
@@ -34,6 +34,7 @@ export default function Home() {
           <CameraRig />
 
           {/* <Freecam /> */}
+          
           <SparklesParticle scale={3}
           count={35}
           />
@@ -57,12 +58,12 @@ export default function Home() {
 
           <ambientLight intensity={2} />
 
-          <Floor />
+          <Floor color="#ffffff" />
 
           {pillars.map((pos, i) => (
             <MovingPillar key={i} position={pos} />
           ))}
-          <SceneFog />
+          <SceneFog color="#e0ecff" />
           <TexturePlane 
           texturePath="/images/Portfolio.png" 
           position={[0.47, 0.5, 0.1]} 
@@ -98,8 +99,7 @@ export default function Home() {
           position={[0.22, -0.11, 0.05]} 
           scale={0.56} 
           rotation={[0, Math.PI/2, 0.15]}
-          setHovered={setHovered} 
-          setWhiteAnim={setWhiteAnim} />
+          setHovered={setHovered}  />
 
           <HoverArea modelPath="/models/nameHover.glb"
           modelName="Name" 
@@ -107,11 +107,10 @@ export default function Home() {
           position={[-0.59, -0.52, 0.05]} 
           scale={1.2} 
           rotation={[0, Math.PI/2, 0.05]}
-          setHovered={setHovered} 
-          setWhiteAnim={setWhiteAnim} />
+          setHovered={setHovered}  />
 
-          <WhiteAnimPlane whiteAnim={whiteAnim} setWhiteAnim={setWhiteAnim} />
       </Canvas>
+
     </main>
   );
 }
