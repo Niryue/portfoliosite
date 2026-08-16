@@ -17,7 +17,7 @@ export default function AboutPage() {
       <Floor color="#eaffd1" position={[0, -1, 0]} />
       <SceneFog color="#e0ecff" />
       <directionalLight 
-          position={[5, 5, 5]} 
+          position={[5, 10, 5]} 
           intensity={5} 
           castShadow
           shadow-bias={-0.0003}

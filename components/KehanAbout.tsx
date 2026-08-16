@@ -95,7 +95,7 @@ export default function KehanAbout({ position }: KehanAboutProps) {
 
         setDragging(false);
       }}
-    >
+      >
       <primitive object={scene}/>
     </group>
   );
