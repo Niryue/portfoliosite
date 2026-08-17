@@ -21,8 +21,8 @@ export default function AboutPage() {
           shadows 
           camera={{ position: [0, 0.5, 2.7], fov: 50 }}
           style={{ background: "#e0ecff" }}>
-      {/* <CameraRig where={[0, 0.25, 0]} /> */}
-      <Freecam />
+      <CameraRig where={[0, 0.25, 0]} />
+      {/* <Freecam /> */}
       {/* <Floor color="#eaffd1" position={[0, -1, 0]} /> */}
       <SceneFog color="#629eff" />
       <directionalLight 
