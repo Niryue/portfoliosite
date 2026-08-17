@@ -2,6 +2,7 @@ import { useAnimations, useGLTF } from "@react-three/drei";
 import { useEffect, useRef, useState } from "react";
 import { Group, LoopOnce } from "three";
 import * as THREE from "three";
+import { useWaterObject } from "@/components/waterFloor/hooks/useWaterObject";
 
 
 type KehanAboutProps = {
@@ -17,6 +18,17 @@ export default function KehanAbout({ position }: KehanAboutProps) {
     const [dragging, setDragging] = useState(false);
     const lastX = useRef(0);
 
+
+    //interact with water
+    const geometries: THREE.BufferGeometry[] = [];
+
+    scene.traverse((object) => {
+      if (object instanceof THREE.Mesh) {
+        geometries.push(object.geometry);
+      }
+    });
+    useWaterObject("KehanAbout", group, geometries);
+    //turns on shadows
     useEffect(() => {
       scene.traverse((child) => {
         if (child instanceof THREE.Mesh) {
@@ -25,7 +37,7 @@ export default function KehanAbout({ position }: KehanAboutProps) {
         }
       });
     }, [scene]);
-
+    //plays animations randomly
     useEffect(() => {
     const animationNames = ["Idle 1", "Idle 2"];
 
@@ -67,7 +79,7 @@ export default function KehanAbout({ position }: KehanAboutProps) {
       mixer.removeEventListener("finished", handleFinished);
     };
     }, [actions, mixer]);
-
+    //return + holding mouse while dragging spins the model
     return (
     <group ref={group} 
     position={position}

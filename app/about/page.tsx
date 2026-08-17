@@ -5,6 +5,14 @@ import Floor from "@/components/Floor";
 import SceneFog from "@/components/SceneFog";
 import CameraRig from "@/components/CameraRig";
 import KehanAbout from "@/components/KehanAbout";
+import WaterFloor from "@/components/waterFloor/index";
+import SeabedFloor from "@/components/waterFloor/components/SeabedFloor/index";
+import ShadowCatcher from "@/components/waterFloor/components/ShadowCatcher/index";
+import WaterDepthIntersection from "@/components/waterFloor/components/WaterDepthIntersection/index";
+import WaterSparkles from "@/components/waterFloor/components/WaterSparkles/index";
+import WaterWaveSimulation from "@/components/waterFloor/components/WaterWaveSimulation/index";
+import Freecam from "@/components/Freecam";
+import SkyBox from "@/components/Sky";
 
 export default function AboutPage() {
   return (
@@ -13,9 +21,10 @@ export default function AboutPage() {
           shadows 
           camera={{ position: [0, 0.5, 2.7], fov: 50 }}
           style={{ background: "#e0ecff" }}>
-      <CameraRig where={[0, 0.25, 0]} />
-      <Floor color="#eaffd1" position={[0, -1, 0]} />
-      <SceneFog color="#e0ecff" />
+      {/* <CameraRig where={[0, 0.25, 0]} /> */}
+      <Freecam />
+      {/* <Floor color="#eaffd1" position={[0, -1, 0]} /> */}
+      <SceneFog color="#629eff" />
       <directionalLight 
           position={[5, 10, 5]} 
           intensity={5} 
@@ -30,6 +39,13 @@ export default function AboutPage() {
 
       <ambientLight intensity={1} />
       <KehanAbout position={[0, -1, 0]} />
+      <WaterFloor />
+      <SeabedFloor />
+      <ShadowCatcher />
+      <WaterDepthIntersection />
+      <WaterSparkles />
+      <WaterWaveSimulation />
+      <SkyBox />
     </Canvas>
     </main>
   )
