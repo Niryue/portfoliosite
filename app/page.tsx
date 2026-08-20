@@ -31,7 +31,7 @@ export default function Home() {
       shadows 
       camera={{ position: [0, 0, 3], fov: 50 }}
       style={{ background: "#e0ecff" }}>
-          <CameraRig where={[0, 0, 0]} />
+          <CameraRig position={[0, 0, 3]} where={[0, 0, 0]} />
 
           {/* <Freecam /> */}
           

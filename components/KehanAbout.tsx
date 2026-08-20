@@ -2,8 +2,6 @@ import { useAnimations, useGLTF } from "@react-three/drei";
 import { useEffect, useRef, useState } from "react";
 import { Group, LoopOnce } from "three";
 import * as THREE from "three";
-import { useWaterObject } from "@/components/waterFloor/hooks/useWaterObject";
-
 
 type KehanAboutProps = {
   position: [number, number, number];
@@ -13,21 +11,12 @@ export default function KehanAbout({ position }: KehanAboutProps) {
     const group = useRef<Group>(null);
 
     const { scene, animations } = useGLTF("/models/KehanAbout.glb");
-    console.log(animations.map((animation) => animation.name));
+    
     const { actions, mixer } = useAnimations(animations, group);
     const [dragging, setDragging] = useState(false);
     const lastX = useRef(0);
 
 
-    //interact with water
-    const geometries: THREE.BufferGeometry[] = [];
-
-    scene.traverse((object) => {
-      if (object instanceof THREE.Mesh) {
-        geometries.push(object.geometry);
-      }
-    });
-    useWaterObject("KehanAbout", group, geometries);
     //turns on shadows
     useEffect(() => {
       scene.traverse((child) => {
@@ -47,7 +36,6 @@ export default function KehanAbout({ position }: KehanAboutProps) {
           Math.floor(Math.random() * animationNames.length)
         ];
 
-      console.log("PLAYING:", randomName);
 
       // Stop all other animations
       Object.values(actions).forEach((action) => {
@@ -68,8 +56,6 @@ export default function KehanAbout({ position }: KehanAboutProps) {
     playRandomAnimation();
 
     function handleFinished() {
-      console.log("ANIMATION FINISHED");
-
       playRandomAnimation();
     }
 
@@ -83,6 +69,7 @@ export default function KehanAbout({ position }: KehanAboutProps) {
     return (
     <group ref={group} 
     position={position}
+    rotation={[0, -4.8 * Math.PI / 8, 0]}
       onPointerDown={(e) => {
       e.stopPropagation();
 

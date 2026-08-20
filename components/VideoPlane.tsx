@@ -12,7 +12,6 @@ type VideoPlaneProps = {
 
 export default function VideoPlane({texturePath, position, args, playbackRate} : VideoPlaneProps) {
   const texture = useVideoTexture(texturePath);
-  console.log(texture.image);
   useEffect(() => {
     const video = texture.image;
 

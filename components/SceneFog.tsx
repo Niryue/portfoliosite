@@ -6,13 +6,14 @@ import * as THREE from "three";
 
 type SceneFogProps = {
   color?: string;
+  density?: number;
 };
-export default function SceneFog({ color }: SceneFogProps) {
+export default function SceneFog({ color, density }: SceneFogProps) {
   const { scene } = useThree();
 
   useEffect(() => {
-    scene.fog = new THREE.FogExp2(color || "#e0ecff", 0.06);
-  }, [scene, color]);
+    scene.fog = new THREE.FogExp2(color || "#e0ecff", density || 0.06);
+  }, [scene, color, density]);
 
   return null;
 }

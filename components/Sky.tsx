@@ -1,12 +1,20 @@
 import { Environment } from "@react-three/drei";
+import { useThree } from "@react-three/fiber";
+import { useEffect } from "react";
+import * as THREE from "three";
 
 export default function SkyBox() {
+  const { scene } = useThree();
+
+  useEffect(() => {
+    scene.environmentRotation.set(0, -Math.PI / 4, 0);
+    scene.backgroundRotation.set(0, -Math.PI / 4, 0);
+  }, [scene]);
+
   return (
-    <>
-      <Environment
-        files="/HDRI/AnimeSky.hdr"
-        background
-      />
-    </>
+    <Environment
+      files="/HDRI/AnimeSkyNight.hdr"
+      background
+    />
   );
 }

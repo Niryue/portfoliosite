@@ -1,21 +1,12 @@
-import { useControls, folder } from "leva";
+export const INTERSECTION = {
+  enabled: true,
 
-export function useWaterDepthIntersectionControls() {
-  return useControls(
-    "Intersection",
-    {
-      enabled:   { value: true,    label: "Enabled" },
-      lineWidth: { value: 0.25, min: 0.01, max: 3.0, step: 0.01, label: "Line Width (world)" },
-      glowWidth: { value: 1.2,  min: 0.1,  max: 10,  step: 0.1,  label: "Glow Width (world)" },
-      Line: folder({
-        lineColor:   { value: "#ffffff", label: "Color" },
-        lineOpacity: { value: 1.0, min: 0, max: 1, step: 0.01, label: "Opacity" },
-      }, { collapsed: false }),
-      Glow: folder({
-        glowColor:   { value: "#88ccff", label: "Color" },
-        glowOpacity: { value: 0.25, min: 0, max: 1, step: 0.01, label: "Opacity" },
-      }, { collapsed: false }),
-    },
-    { collapsed: true }
-  );
-}
+  lineWidth: 0.25,
+  glowWidth: 1.2,
+
+  lineColor: "#ffffff",
+  lineOpacity: 1.0,
+
+  glowColor: "#88ccff",
+  glowOpacity: 0.25,
+} as const;

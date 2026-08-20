@@ -10,7 +10,7 @@ import { waterObjectsRegistry } from "../stores/waterObjectsRegistry";
  *
  * @param id        Unique string identifier for this object.
  * @param ref       Ref to the model's root Object3D (group or mesh).
- * @param geometries BufferGeometries that should cast the waterline effects. CHANGED TO MESHES
+ * @param geometries BufferGeometries that should cast the waterline effects.
  *
  * @example
  * const groupRef = useRef<THREE.Group>(null!)
