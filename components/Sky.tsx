@@ -7,8 +7,8 @@ export default function SkyBox() {
   const { scene } = useThree();
 
   useEffect(() => {
-    scene.environmentRotation.set(0, -Math.PI / 4, 0);
-    scene.backgroundRotation.set(0, -Math.PI / 4, 0);
+    scene.environmentRotation.set(0, (2 * Math.PI )/ 3, 0);
+    scene.backgroundRotation.set(0, (2 * Math.PI )/ 3, 0);
   }, [scene]);
 
   return (

@@ -16,7 +16,7 @@ import Freecam from "@/components/Freecam";
 import SkyBox from "@/components/Sky";
 import AboutModel from "@/components/AboutModel";
 import AboutModelWaterInteraction from "@/components/AboutModelWaterInteraction";
-import SkyDome from "@/components/skyDome/SkyDome";
+import SkyDome from "@/components/skyDome/SkyDomeNightForSkyBox";
 
 export default function AboutPage() {
   return (
@@ -25,13 +25,13 @@ export default function AboutPage() {
           shadows 
           camera={{ position: [0, 0.5, 2.7], fov: 40 }}
           style={{ background: "#e0ecff" }}>
-      {/* <CameraRig position={[-1, 19, -0.2]} where={[0, 19, 0.3]} /> */}
-      <Freecam />
+      {/* <Freecam /> */}
+      <CameraRig position={[-1, 19.2, -0.5]} where={[0, 19.2, 0]} />
       {/* <Floor color="#eaffd1" position={[0, -1, 0]} /> */}
       <SceneFog color="#08002f" density={0.014} />
       <directionalLight 
-          color="#2e3ba2"
-          position={[0, 100, 100]} 
+          color="#545d9e"
+          position={[30, 100, 100]} 
           intensity={5} 
           castShadow
           shadow-bias={-0.0005}
@@ -43,7 +43,7 @@ export default function AboutPage() {
           shadow-camera-bottom={-130} />
 
       <ambientLight 
-      color="#312944"
+      color="#5d488d"
       intensity={1} />
       <KehanAbout position={[2, 17.9, 2.5]} />
       <WaterFloor />
@@ -51,7 +51,7 @@ export default function AboutPage() {
       <WaterDepthIntersection />
       <WaterSparkles />
       <WaterWaveSimulation />
-      {/* <SkyBox /> */}
+      <SkyBox />
       <SkyDome />
       <AboutModel position={[0, 0, 0]} />
       <AboutModelWaterInteraction position={[0, 0, 0]} />
