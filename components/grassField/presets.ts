@@ -32,9 +32,9 @@ export const GRASS_PRESETS: Record<string, GrassPreset> = {
     values: {
       // Blades (rebuilds)
       grMinWidth: 0.06,
-      grMaxWidth: 0.06,
-      grMinLength: 0.15,
-      grMaxLength: 0.25,
+      grMaxWidth: 0.08,
+      grMinLength: 0.19,
+      grMaxLength: 0.30,
       // Color
       grColorBottom: "#4f7c13",
       grColorTop: "#79a01c",
@@ -43,7 +43,7 @@ export const GRASS_PRESETS: Record<string, GrassPreset> = {
       grBrightness: 0.8,
       // Ground
       grDirtColor: "#ac956c",
-      grDirtCoverage: 0.41,
+      grDirtCoverage: 0,
       grDirtScale: 0.4,
       grDirtSoftness: 0.06,
       grDirtCut: 1.0,
@@ -51,8 +51,8 @@ export const GRASS_PRESETS: Record<string, GrassPreset> = {
       grGndVarColor: "#c4a77d",
       grGndVarStrength: 0.9,
       // Translucency
-      grTransColor: "#c1e54d",
-      grTransStrength: 2.5,
+      grTransColor: "#eaf7bc",
+      grTransStrength: 1.9,
       // Wind
       grWindStrength: 0.1,
       grWindSpeed: 1.3,

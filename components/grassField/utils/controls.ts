@@ -22,7 +22,7 @@ export function useGrassControls() {
       Blades: folder(
         {
           grDensity: {
-            value: 300,
+            value: 50,
             min: 1,
             max: 300,
             step: 1,
@@ -43,28 +43,28 @@ export function useGrassControls() {
             label: "Min Width (rebuilds)",
           },
           grMaxWidth: {
-            value: 0.06,
+            value: 0.08,
             min: 0.005,
             max: 0.5,
             step: 0.005,
             label: "Max Width (rebuilds)",
           },
           grMinLength: {
-            value: 0.15,
+            value: 0.19,
             min: 0.02,
             max: 3,
             step: 0.01,
             label: "Min Length (rebuilds)",
           },
           grMaxLength: {
-            value: 0.25,
+            value: 0.30,
             min: 0.02,
             max: 3,
             step: 0.01,
             label: "Max Length (rebuilds)",
           },
           grTiltMax: {
-            value: 0.16,
+            value: 0.31,
             min: 0,
             max: 1.5,
             step: 0.01,
@@ -120,7 +120,7 @@ export function useGrassControls() {
             label: "Brightness",
           },
           grShadowStrength: {
-            value: 0.35,
+            value: 0.97,
             min: 0,
             max: 1,
             step: 0.01,
@@ -131,7 +131,7 @@ export function useGrassControls() {
           // a moving caster edge (swaying trees) fades across the grass instead of
           // snapping on and off — which is what stops the wind flicker.
           grShadowRadius: {
-            value: 0,
+            value: 0.08,
             min: 0,
             max: 1.5,
             step: 0.01,
@@ -139,7 +139,7 @@ export function useGrassControls() {
           },
           // How many taps make up the ring. More = smoother penumbra, more cost.
           grShadowSamples: {
-            value: 1,
+            value: 2,
             min: 1,
             max: 4,
             step: 1,
@@ -173,7 +173,7 @@ export function useGrassControls() {
       Patches: folder(
         {
           grPatchStrength: {
-            value: 0.73,
+            value: 0.20,
             min: 0,
             max: 1,
             step: 0.01,
@@ -209,7 +209,7 @@ export function useGrassControls() {
         {
           grDirtColor: { value: "#ac956c", label: "Dirt Color" },
           grDirtCoverage: {
-            value: 0.41,
+            value: 0,
             min: 0,
             max: 1,
             step: 0.01,
@@ -340,16 +340,16 @@ export function useGrassControls() {
       // by the scene's directional light, which GrassField mirrors into uSunDir.
       Translucency: folder(
         {
-          grTransColor: { value: "#c1e54d", label: "Color" },
+          grTransColor: { value: "#eaf7bc", label: "Color" },
           grTransStrength: {
-            value: 2.5,
+            value: 1.9,
             min: 0,
             max: 3,
             step: 0.05,
             label: "Strength (0 = off)",
           },
           grTransPower: {
-            value: 6.4,
+            value: 3.1,
             min: 0.5,
             max: 16,
             step: 0.1,

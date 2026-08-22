@@ -17,6 +17,12 @@ import SkyBox from "@/components/Sky";
 import AboutModel from "@/components/AboutModel";
 import AboutModelWaterInteraction from "@/components/AboutModelWaterInteraction";
 import SkyDome from "@/components/skyDome/SkyDomeNightForSkyBox";
+import GrassField from "@/components/grassField/index";
+import { useState } from "react";
+import Sparkles from "@/components/SparklesParticle";
+
+
+
 
 export default function AboutPage() {
   return (
@@ -43,7 +49,7 @@ export default function AboutPage() {
           shadow-camera-bottom={-130} />
 
       <ambientLight 
-      color="#5d488d"
+      color="#222442"
       intensity={1} />
       <KehanAbout position={[2, 17.9, 2.5]} />
       <WaterFloor />
@@ -55,6 +61,16 @@ export default function AboutPage() {
       <SkyDome />
       <AboutModel position={[0, 0, 0]} />
       <AboutModelWaterInteraction position={[0, 0, 0]} />
+      <GrassField url="/models/GrassFieldPlanes.glb"/>
+      <Sparkles
+            count={100}
+            size={1}
+            speed={1}
+            opacity={1}
+            color={"#ffffff"}
+            scale={10}
+            position={[0, 19, 0]}
+          />
 {/* 
       <EffectComposer>
           <Bloom

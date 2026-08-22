@@ -116,13 +116,12 @@ export default function Freecam() {
       camera.position.addScaledVector(right, -moveSpeed * delta);
     }
 
-    // Space = up
-    if (key["Space"]) {
+    if (key["KeyQ"]) {
       camera.position.y += moveSpeed * delta;
     }
 
     // Ctrl = down
-    if (key["ControlLeft"] || key["ControlRight"]) {
+    if (key["KeyE"] || key["ControlRight"]) {
       camera.position.y -= moveSpeed * delta;
     }
   });

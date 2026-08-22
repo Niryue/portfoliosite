@@ -44,6 +44,55 @@ export interface ShadowPreset {
 }
 
 export interface SkyPreset {
+  // ─────────────────────────────────────────────────────────────────────────
+  // New SkyDome moon / stars / aurora values
+  // ─────────────────────────────────────────────────────────────────────────
+
+  DomeRadius?: number;
+
+  moonElev?: number;
+  moonAzim?: number;
+  moonColor?: string;
+  moonGlowColor?: string;
+  moonSize?: number;
+  moonGlowFalloff?: number;
+  moonGlowIntensity?: number;
+  moonEdgeSoftness?: number;
+  moonPhasePos?: number;
+  moonPhaseSoftness?: number;
+  moonPhaseAngle?: number;
+  moonEmission?: number;
+  moonSpotColor?: string;
+  moonSpotScale?: number;
+  moonSpotStrength?: number;
+  moonSpotThreshold?: number;
+  moonSpotSharpness?: number;
+  moonSpotOctaves?: number;
+
+  starDensity?: number;
+  starSize?: number;
+  starBrightness?: number;
+  starFloor?: number;
+  starDriftY?: number;
+  starDriftZ?: number;
+  starTwinkleSpeed?: number;
+  starTwinkleAmount?: number;
+
+  auroraIntensity?: number;
+  auroraColor1?: string;
+  auroraColor2?: string;
+  auroraFloor?: number;
+  auroraCeil?: number;
+  auroraScale?: number;
+  auroraSpeed?: number;
+  auroraThresh?: number;
+  auroraSoft?: number;
+  auroraWav?: number;
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Existing preset structure — KEPT
+  // ─────────────────────────────────────────────────────────────────────────
+
   label: string;
   ambient: AmbientPreset;
   filter: FilterPreset;
@@ -52,45 +101,18 @@ export interface SkyPreset {
 
   // ── Feature flags ──────────────────────────────────────────────────────────
   starsEnabled: boolean;
-  moonEnabled: boolean; // the moon system doubles as the sun disc
+  moonEnabled: boolean;
   cloudsEnabled: boolean;
   sparklesEnabled?: boolean;
   dustCloudsEnabled?: boolean;
   auroraEnabled?: boolean;
   sideDistortionEnabled?: boolean;
 
-  // ── Stars ──────────────────────────────────────────────────────────────────
-  starDensity?: number;
-  starSize?: number;
-  starBrightness?: number;
-  starFloor?: number;
-
   // ── Sky gradient ───────────────────────────────────────────────────────────
   skyLow?: string;
   skyHigh?: string;
   horizonLine?: number;
   horizonSpread?: number;
-
-  // ── Moon / Sun disc ────────────────────────────────────────────────────────
-  moonElev?: number; // degrees
-  moonAzim?: number; // degrees
-  moonColor?: string;
-  moonGlowColor?: string;
-  moonGlowFalloff?: number;
-  moonGlowIntensity?: number;
-  moonSize?: number;
-  moonEdgeSoftness?: number;
-  moonPhasePos?: number;
-  moonPhaseSoftness?: number;
-  moonPhaseAngle?: number; // degrees
-  moonEmission?: number;
-  moonSpotColor?: string;
-  moonSpotStrength?: number;
-
-  // ── Aurora ─────────────────────────────────────────────────────────────────
-  auroraIntensity?: number;
-  auroraColor1?: string;
-  auroraColor2?: string;
 
   // ── Clouds ─────────────────────────────────────────────────────────────────
   cloudSpeed?: number;
@@ -115,7 +137,6 @@ export interface SkyPreset {
   moonLightSoftness?: number;
 
   // ── Scene dressing carried over from the source project ────────────────────
-  // Unused by SkyDome itself; kept so the presets stay portable between scenes.
   mountainColor?: string;
   mountainColorTop?: string;
   gradSoftness?: number;
@@ -164,7 +185,7 @@ export const SKY_PRESETS: Record<SkyMode, SkyPreset> = {
     },
 
     starsEnabled: false,
-    moonEnabled: true, // moon system doubles as the sun disc
+    moonEnabled: true,
     cloudsEnabled: true,
 
     sparklesEnabled: true,
@@ -176,31 +197,27 @@ export const SKY_PRESETS: Record<SkyMode, SkyPreset> = {
     horizonLine: 0.05,
     horizonSpread: 0.2,
 
-    // Sun disc (reusing moon uniforms)
+    // Sun disc
     moonElev: 10,
     moonAzim: 258,
     moonColor: "#fffffd",
     moonGlowColor: "#ff8026",
     moonSize: 0.015,
     moonEdgeSoftness: 0.04,
-    moonPhasePos: 2, // fully lit — no shadow
+    moonPhasePos: 2,
     moonPhaseSoftness: 0.45,
     moonPhaseAngle: 150,
     moonEmission: 1.4,
     moonSpotColor: "#69c2f6",
-    moonSpotStrength: 0, // no spots on the sun
+    moonSpotStrength: 0,
     moonGlowFalloff: 53,
+
     // Daytime clouds
     cloudDensity: 0.36,
-    // cloudScale: 15.5,
     cloudScale: 8.5,
     cloudSharpness: 0.1,
-    // cloudFloor: 0,
     cloudAmplitude: 0.74,
     cloudGrain: 0.13,
-    // cloudCore: "#f2f2f2",
-    // cloudEdge: "#9ecef8",
-    // cloudRim: "#f2f2f2",
     cloudCore: "#aab2ba",
     cloudEdge: "#faf3d0",
     cloudRim: "#e5a715",
@@ -212,7 +229,7 @@ export const SKY_PRESETS: Record<SkyMode, SkyPreset> = {
     moonLightSoftness: 0.75,
     cloudDarkenFar: 1,
     cloudFloor: -0.03,
-    mountainColor: "#88aebe", //23c2c8
+    mountainColor: "#88aebe",
     mountainColorTop: "#ded0ba",
     gradSoftness: 0.8,
     fogColor: "#c1c1c1",
@@ -224,6 +241,7 @@ export const SKY_PRESETS: Record<SkyMode, SkyPreset> = {
     seabedColorBottom: "#23c2c8",
     seabedColorTop: "#177096",
   },
+
   day: {
     label: "Day",
     ambient: { color: "#fff5b7", intensity: 2 },
@@ -240,8 +258,9 @@ export const SKY_PRESETS: Record<SkyMode, SkyPreset> = {
       targetY: 23.0,
       targetZ: 200,
     },
+
     starsEnabled: false,
-    moonEnabled: true, // moon system doubles as the sun disc
+    moonEnabled: true,
     cloudsEnabled: true,
     moonElev: 10,
     moonAzim: 258,
@@ -250,31 +269,26 @@ export const SKY_PRESETS: Record<SkyMode, SkyPreset> = {
     dustCloudsEnabled: true,
 
     // Sky
-    // Title Screen
-    // skyLow: "#2494e5",
-    // skyHigh: "#0053ff",
     skyLow: "#4aa7e2",
     skyHigh: "#8ecef2",
     horizonLine: 0.05,
     horizonSpread: 0.15,
 
-    // Sun disc (reusing moon uniforms)
+    // Sun disc
     moonColor: "#fbfcd6",
     moonGlowColor: "#34a2ef",
     moonSize: 0.015,
     moonEdgeSoftness: 0.04,
-    moonPhasePos: 2, // fully lit — no shadow
+    moonPhasePos: 2,
     moonPhaseSoftness: 0.45,
     moonPhaseAngle: 150,
     moonEmission: 1.4,
     moonSpotColor: "#69c2f6",
-    moonSpotStrength: 0, // no spots on the sun
+    moonSpotStrength: 0,
     moonGlowFalloff: 53,
+
     // Daytime clouds
     cloudDensity: 0.36,
-    // cloudScale: 15.5,
-
-    // cloudDensity: 0.43,
     cloudScale: 8.5,
     cloudSharpness: 0.05,
     cloudAmplitude: 0.63,
@@ -292,15 +306,12 @@ export const SKY_PRESETS: Record<SkyMode, SkyPreset> = {
 
     cloudDarkenFar: 1,
     cloudFloor: -0.03,
-    // mountainColor: "#4584de",
-    // mountainColorTop: "#4458eb",
     mountainColor: "#518cb4",
     mountainColorTop: "#518cb4",
     gradSoftness: 0.65,
     fogColor: "#518cb4",
     fogDensity: 0.4,
     chunkFogColor: "#518cb4",
-    // waterHorizonColor: "#4568e7",
     waterHorizonColor: "#4aa7e2",
     waterDeepOpacity: 0.7,
 
@@ -328,7 +339,7 @@ export const SKY_PRESETS: Record<SkyMode, SkyPreset> = {
     },
 
     starsEnabled: true,
-    moonEnabled: true, // sun disc
+    moonEnabled: true,
     cloudsEnabled: true,
 
     sparklesEnabled: false,
@@ -357,13 +368,12 @@ export const SKY_PRESETS: Record<SkyMode, SkyPreset> = {
 
     // Clouds
     cloudDensity: 0.36,
-    // cloudScale: 15.5,
     cloudScale: 8.5,
     cloudSharpness: 0.1,
     cloudAmplitude: 0.74,
     cloudGrain: 0.13,
     cloudOpacity: 0.55,
-    // Mountains
+
     cloudCore: "#584a75",
     cloudEdge: "#d86c68",
     cloudRim: "#ffeb89",
@@ -372,36 +382,49 @@ export const SKY_PRESETS: Record<SkyMode, SkyPreset> = {
     moonLightSoftness: 0.99,
     cloudDarkenFar: 0.9,
     cloudFloor: -0.04,
+
     mountainColor: "#6e2a2d",
     mountainColorTop: "#a84050",
+
     seabedColorBottom: "#06314f",
     seabedColorTop: "#1a707a",
     seabedFadeDistance: 210,
     seabedFadeStrength: 3.8,
     waterDeepOpacity: 0.7,
+
     fogColor: "#ffa99e",
     fogDensity: 0.2,
     fogY: -11,
-    // Rain
+
     rainColor: "#e8b89a",
     rainOpacity: 0.7,
-    // Chunk
+
     chunkFogColor: "#983a37",
     waterHorizonColor: "#983a37",
+
     shadow: {
       shadowBias: -0.0027,
-      // shadowFar: 1250,
     },
   },
+
   night: {
     label: "Night",
-    ambient: { color: "#314c9d", intensity: 2.25 },
-    filter: { color: "hsl(220, 70%, 55%)", opacity: 0.18 },
+
+    ambient: {
+      color: "#000000",
+      intensity: 0,
+    },
+
+    filter: {
+      color: "#000000",
+      opacity: 0,
+    },
+
     light: {
-      ambientColor: "#2f4b9d",
-      ambientIntensity: 3.1,
-      dirColor: "#bcd5ff",
-      dirIntensity: 2,
+      ambientColor: "#000000",
+      ambientIntensity: 0,
+      dirColor: "#000000",
+      dirIntensity: 0,
       dirX: -121.0,
       dirY: 70.0,
       dirZ: 81.5,
@@ -409,61 +432,129 @@ export const SKY_PRESETS: Record<SkyMode, SkyPreset> = {
       targetY: 19.5,
       targetZ: 130.5,
     },
+
     starsEnabled: true,
     moonEnabled: true,
-    cloudsEnabled: true,
-    skyLow: "#093286",
-    skyHigh: "#020238",
-    horizonLine: 0.02,
+    cloudsEnabled: false,
     sparklesEnabled: false,
-    horizonSpread: 0.1,
     dustCloudsEnabled: false,
-    // Clouds
-    // cloudScale: 15.5,
+    auroraEnabled: true,
+
+    // ─────────────────────────────────────────────
+    // SKY BACKGROUND — TRANSPARENT
+    // ─────────────────────────────────────────────
+
+    skyLow: "#00000000",
+    skyHigh: "#00000000",
+    horizonLine: 0,
+    horizonSpread: 0,
+
+    // ─────────────────────────────────────────────
+    // MOON
+    // ─────────────────────────────────────────────
+
+    DomeRadius: 500,
+
+    moonElev: 17,
+    moonAzim: 37,
+    moonColor: "#d7ebff",
+    moonGlowColor: "#075fc1",
+    moonSize: 0.03,
+    moonGlowFalloff: 80,
+    moonGlowIntensity: 0.75,
+    moonEdgeSoftness: 0.08,
+    moonPhasePos: -0.10,
+    moonPhaseSoftness: 1.90,
+    moonPhaseAngle: 150,
+    moonEmission: 2,
+    moonSpotColor: "#69c2f6",
+    moonSpotScale: 2.2,
+    moonSpotStrength: 0.9,
+    moonSpotThreshold: 0.58,
+    moonSpotSharpness: 0.15,
+    moonSpotOctaves: 4,
+
+    // ─────────────────────────────────────────────
+    // STARS
+    // ─────────────────────────────────────────────
+
+    starDensity: 350,
+    starSize: 0.04,
+    starBrightness: 0.7,
+    starFloor: 0.09,
+    starDriftY: 0,
+    starDriftZ: 0,
+    starTwinkleSpeed: 2,
+    starTwinkleAmount: 1,
+
+    // ─────────────────────────────────────────────
+    // AURORA
+    // ─────────────────────────────────────────────
+
+    auroraIntensity: 3,
+    auroraColor1: "#3affd8",
+    auroraColor2: "#7b5bff",
+    auroraFloor: 0.09,
+    auroraCeil: 0.43,
+    auroraScale: 9,
+    auroraSpeed: 0.2,
+    auroraThresh: 0.77,
+    auroraSoft: 0.24,
+    auroraWav: 2.2,
+
+    // ─────────────────────────────────────────────
+    // EVERYTHING ELSE — INVISIBLE
+    // ─────────────────────────────────────────────
+
     cloudScale: 8.5,
     cloudSharpness: 0.1,
-    cloudAmplitude: 0.74,
-    cloudGrain: 0.13,
-    cloudDensity: 0.36,
-    cloudOpacity: 0.35,
-    cloudCore: "#4392e8",
-    cloudEdge: "#4392e8",
-    cloudRim: "#f2f2f2",
-    cloudEdgeWidth: 0.05,
-    cloudRimStrength: 0.1,
+    cloudAmplitude: 0,
+    cloudGrain: 0,
+    cloudDensity: 0,
+    cloudOpacity: 0,
 
-    moonElev: 10,
-    moonAzim: 258,
-    // moonEmission: 0.1,
-    moonSpotStrength: 0.9,
-    moonPhasePos: 0.09999999999999998,
-    moonPhaseSoftness: 1.9,
-    moonEmission: 2,
-    moonGlowFalloff: 80,
-    moonGlowColor: "#075fc1",
-    moonColor: "#d7ebff",
-    moonEdgeSoftness: 0.08,
-    // Mountains
-    mountainColorTop: "#000c2e",
-    mountainColor: "#14316c",
-    seabedColorBottom: "#03ad71",
-    seabedColorTop: "#00437f",
+    cloudCore: "#00000000",
+    cloudEdge: "#00000000",
+    cloudRim: "#00000000",
 
-    seabedFadeDistance: 210,
-    seabedFadeStrength: 3.8,
-    waterDeepOpacity: 1,
-    // Rain
-    rainColor: "#6a9ec8",
-    rainOpacity: 0.5,
-    chunkFogColor: "#091f51",
-    waterHorizonColor: "#091f51",
-    waterDeepColor: "#379ea0",
-    waterFadeStrength: 0.6,
-    // Shadow overrides for night — moon is low, extend far plane to reduce cut-off.
+    cloudEdgeWidth: 0,
+    cloudRimStrength: 0,
+    cloudDarkenFar: 0,
+
+    cloudFloor: 999999,
+    cloudCeiling: -999999,
+
+    moonLightRadius: 0,
+    moonLightSoftness: 0,
+
+    mountainColor: "#00000000",
+    mountainColorTop: "#00000000",
+    gradSoftness: 0,
+
+    fogColor: "#00000000",
+    fogDensity: 0,
+    fogY: 0,
+
+    chunkFogColor: "#00000000",
+
+    seabedColorBottom: "#00000000",
+    seabedColorTop: "#00000000",
+    seabedFadeDistance: 0,
+    seabedFadeStrength: 0,
+
+    waterHorizonColor: "#00000000",
+    waterDeepColor: "#00000000",
+    waterDeepOpacity: 0,
+    waterFadeStrength: 0,
+
+    rainColor: "#00000000",
+    rainOpacity: 0,
+
     shadow: {
       shadowBias: -0.0015,
       shadowFar: 1250,
     },
+
     // All sky/moon/cloud values left undefined → Leva controls apply
   },
 };
