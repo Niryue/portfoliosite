@@ -7,14 +7,16 @@ import * as THREE from "three";
 
 interface SceneModelProps {
   position?: [number, number, number];
+  path: string;
 }
 
 export default function SceneModel({
-  position
+  position,
+  path
 }: SceneModelProps) {
   const group = useRef<Group>(null);
 
-  const { scene } = useGLTF("/models/GrassFieldPlanes.glb");
+  const { scene } = useGLTF(path);
 
   return (
     <group ref={group} position={position}>
@@ -22,5 +24,3 @@ export default function SceneModel({
     </group>
   );
 }
-
-useGLTF.preload("/models/GrassFieldPlanes.glb");

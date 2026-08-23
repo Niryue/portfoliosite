@@ -113,7 +113,7 @@ export function useGrassControls() {
             label: "Gradient Curve (>1 = more base)",
           },
           grBrightness: {
-            value: 0.8,
+            value: 0.4,
             min: 0.01,
             max: 2,
             step: 0.05,

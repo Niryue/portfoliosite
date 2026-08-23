@@ -40,7 +40,7 @@ export const GRASS_PRESETS: Record<string, GrassPreset> = {
       grColorTop: "#79a01c",
       grGradStart: 0.15,
       grGradEnd: 1.0,
-      grBrightness: 0.8,
+      grBrightness: 0.4,
       // Ground
       grDirtColor: "#ac956c",
       grDirtCoverage: 0,

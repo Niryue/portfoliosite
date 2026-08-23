@@ -2,7 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
-
+import { Leva } from "leva";
 import Floor from "@/components/Floor";
 import SceneFog from "@/components/SceneFog";
 import CameraRig from "@/components/CameraRig";
@@ -20,6 +20,8 @@ import SkyDome from "@/components/skyDome/SkyDomeNightForSkyBox";
 import GrassField from "@/components/grassField/index";
 import { useState } from "react";
 import Sparkles from "@/components/SparklesParticle";
+import LightModel from "@/components/ImportModel";
+import { Light } from "three";
 
 
 
@@ -31,6 +33,7 @@ export default function AboutPage() {
           shadows 
           camera={{ position: [0, 0.5, 2.7], fov: 40 }}
           style={{ background: "#e0ecff" }}>
+      <Leva hidden={true} />
       {/* <Freecam /> */}
       <CameraRig position={[-1, 19.2, -0.5]} where={[0, 19.2, 0]} />
       {/* <Floor color="#eaffd1" position={[0, -1, 0]} /> */}
@@ -68,9 +71,31 @@ export default function AboutPage() {
             speed={1}
             opacity={1}
             color={"#ffffff"}
-            scale={10}
+            scale={[10, 10, 10]}
             position={[0, 19, 0]}
           />
+      <LightModel position={[0, 0, 0]} path="/models/LightsModel.glb" />
+      <pointLight
+        position={[1.63, 18.53, 0.67]}
+        color={"#f5ab00"}
+        intensity={2.5}
+        distance={15}
+        shadow-bias={-0.005}
+      />
+      <pointLight
+        position={[21.95, 20, 20.07]}
+        color={"#ffffff"}
+        intensity={12}
+        distance={300}
+        shadow-bias={-0.0005}
+      />
+      <pointLight
+        position={[72.66, 10.72, 19.9]}
+        color={"#ffffff"}
+        intensity={12}
+        distance={300}
+        shadow-bias={-0.0005}
+      />
 {/* 
       <EffectComposer>
           <Bloom

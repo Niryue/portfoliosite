@@ -69,7 +69,7 @@ export default function KehanAbout({ position }: KehanAboutProps) {
     return (
     <group ref={group} 
     position={position}
-    rotation={[0, -4.8 * Math.PI / 8, 0]}
+    rotation={[0, -6 * Math.PI / 8, 0]}
       onPointerDown={(e) => {
       e.stopPropagation();
 
