@@ -18,17 +18,20 @@ import AboutModel from "@/components/AboutModel";
 import AboutModelWaterInteraction from "@/components/AboutModelWaterInteraction";
 import SkyDome from "@/components/skyDome/SkyDomeNightForSkyBox";
 import GrassField from "@/components/grassField/index";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Sparkles from "@/components/SparklesParticle";
 import LightModel from "@/components/ImportModel";
 import { Light } from "three";
+import styles from "@/components/overlays/About.module.css";
+import Script from "next/script";
 
 
 
 
 export default function AboutPage() {
+
   return (
-    <main style={{ width: "100vw", height: "100vh" }}> 
+    <div className={styles.page}>
       <Canvas
           shadows 
           camera={{ position: [0, 0.5, 2.7], fov: 40 }}
@@ -96,17 +99,10 @@ export default function AboutPage() {
         distance={300}
         shadow-bias={-0.0005}
       />
-{/* 
-      <EffectComposer>
-          <Bloom
-            intensity={1.5}
-            luminanceThreshold={0.8}
-            luminanceSmoothing={0.3}
-            mipmapBlur
-          />
-      </EffectComposer> */}
-
     </Canvas>
-    </main>
-  )
+    <div className={styles.glassButton}>
+      Click Me!
+    </div>
+  </div>
+  );
 }
